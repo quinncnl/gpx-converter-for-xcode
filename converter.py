@@ -3,7 +3,7 @@ import gpxpy.gpx
 from gpxpy import geo
 
 
-def handle_data():
+def main():
     path = 'gpxes/eindhoven.gpx'
 
     gpx_file = open(path, 'r')
@@ -51,4 +51,4 @@ def handle_data():
     f.write(gpx)
     f.close()
                                                          
-handle_data()
+main()
