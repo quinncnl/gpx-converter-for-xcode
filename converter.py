@@ -1,13 +1,20 @@
+#!/usr/bin/env python3
+
+import sys, os
 import gpxpy
 import gpxpy.gpx
 from gpxpy import geo
 
 
-def main():
-    path = 'gpxes/eindhoven.gpx'
+def convert(file):
+    path = file
 
     gpx_file = open(path, 'r')
+
+    print(gpx_file)
+    
     gpx = gpxpy.parse(gpx_file)
+
     points = []
     
     for track in gpx.tracks:
@@ -47,8 +54,30 @@ def main():
     gpx += """
 </gpx>"""
 
-    f = open("output.gpx", "w")
+    f = open(path + ".converted.gpx", "w")
     f.write(gpx)
     f.close()
-                                                         
-main()
+
+def main():
+
+    if len(sys.argv) == 1:
+        print("This program requires at least one parameter")
+        sys.exit(1)
+
+    for path in sys.argv:
+
+        if path == sys.argv[0]:
+            continue
+        
+        if os.path.isdir(path):
+            # Iterate the root directory recursively using os.walk and for each video file present get the subtitle
+            for dir_path, _, file_names in os.walk(path):
+                for filename in file_names:
+                    file_path = os.path.join(dir_path, filename)
+                    convert(file_path)
+        else:
+            convert(path)
+
+            
+if __name__ == '__main__':
+    main()
